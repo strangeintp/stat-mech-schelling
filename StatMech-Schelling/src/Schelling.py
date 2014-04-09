@@ -52,7 +52,10 @@ class SSM_Original_Agent(object):
         local_distribution = sorted(Races, key = lambda race: count[race]) # sort ascending by race count
         local_distribution = [race for race in local_distribution if count[race]>0]  # strip out non-present races
         if local_distribution[0]==self.race and len(local_distribution)>1:  # self in smallest minority
-            return True
+            if count[local_distribution[1]] > count[self.race]:  # not a tie
+                return True
+            else:
+                return False
         else:
             return False
 
