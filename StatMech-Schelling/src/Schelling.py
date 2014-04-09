@@ -55,11 +55,6 @@ class SSM_Original_Agent(object):
             return True
         else:
             return False
-#         mycount = count[self.race]
-#         for race in Races:
-#             if count[race]<=mycount and race!=self.race and count[race]!=0:
-#                 return False  #happy if it's not in the smallest minority
-#         return True
 
 class SSM_Variant_Agent(SSM_Original_Agent):
 
