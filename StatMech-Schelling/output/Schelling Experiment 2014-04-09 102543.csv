@@ -1,0 +1,78 @@
+Experiment Schelling Experiment
+Original vs Variant.
+Experiment started 2014-04-09 102543
+
+######################################################
+Experiment Defaults:
+                           setNumOfRaces :,  	2
+Experiment Parameter Variations:
+                           setAgentClass :,  	['ORIGINAL', 'VARIANT']
+######################################################
+*********************Job Settings*********************
+                           setAgentClass :	,ORIGINAL
+ job ID, setAgentClass, runtime, pct happy, pct same
+ 1,             ORIGINAL,13,99.80,85.52
+ 1,             ORIGINAL,11,97.94,84.89
+ 1,             ORIGINAL,12,99.72,85.42
+ 1,             ORIGINAL,10,98.42,85.87
+ 1,             ORIGINAL,14,98.91,85.81
+ 1,             ORIGINAL,14,99.92,87.59
+ 1,             ORIGINAL, 9,98.30,86.05
+ 1,             ORIGINAL,11,99.43,84.76
+ 1,             ORIGINAL,13,99.60,87.39
+ 1,             ORIGINAL, 8,97.74,83.41
+ 1,             ORIGINAL,18,99.88,85.93
+ 1,             ORIGINAL,12,99.60,88.06
+ 1,             ORIGINAL,12,99.35,85.68
+ 1,             ORIGINAL,14,99.72,87.66
+ 1,             ORIGINAL,10,99.68,85.80
+ 1,             ORIGINAL,11,99.15,85.18
+ 1,             ORIGINAL,11,99.76,86.74
+ 1,             ORIGINAL,11,99.68,84.62
+ 1,             ORIGINAL,11,98.30,85.98
+ 1,             ORIGINAL,13,99.68,85.12
+averages: ,             ORIGINAL,11,99.23,85.87
+standard deviations: ,             ORIGINAL, 2,0.68,1.13
+*********************Job Settings*********************
+                           setAgentClass :	,VARIANT
+ job ID, setAgentClass, runtime, pct happy, pct same
+ 2,              VARIANT,12,99.72,85.89
+ 2,              VARIANT,17,99.64,87.79
+ 2,              VARIANT,11,99.47,85.55
+ 2,              VARIANT,11,99.39,85.79
+ 2,              VARIANT,12,99.72,85.25
+ 2,              VARIANT,11,99.88,84.98
+ 2,              VARIANT,12,99.51,86.81
+ 2,              VARIANT,12,99.35,84.89
+ 2,              VARIANT,15,99.80,85.67
+ 2,              VARIANT,14,99.92,86.71
+ 2,              VARIANT,10,99.56,85.07
+ 2,              VARIANT,11,99.60,85.02
+ 2,              VARIANT,12,100.00,84.99
+ 2,              VARIANT, 9,98.22,84.26
+ 2,              VARIANT,12,99.92,84.12
+ 2,              VARIANT, 9,98.46,84.65
+ 2,              VARIANT,14,99.96,84.67
+ 2,              VARIANT,11,99.43,85.56
+ 2,              VARIANT,13,99.60,85.14
+ 2,              VARIANT,10,98.18,85.17
+averages: ,              VARIANT,11,99.47,85.40
+standard deviations: ,              VARIANT, 1,0.53,0.87
+######################################################
+EXPERIMENT SUMMARY:  JOB AVERAGES
+######################################################
+
+, setAgentClass, runtime, pct happy, pct same
+ 1,             ORIGINAL,11,99.23,85.87
+ 2,              VARIANT,11,99.47,85.40
+######################################################
+EXPERIMENT SUMMARY:  JOB STANDARD DEVIATIONS
+######################################################
+
+, setAgentClass, runtime, pct happy, pct same
+ 1,             ORIGINAL, 2,0.68,1.13
+ 2,              VARIANT, 1,0.53,0.87
+######################################################
+Experiment Completed 2014-04-09 102617
+######################################################
+
