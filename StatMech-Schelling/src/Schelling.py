@@ -49,11 +49,17 @@ class SSM_Original_Agent(object):
         count = [0 for i in Races] #counts of neighbors of each race in this agent's neighborhood
         for neighbor in neighbors:
             count[neighbor.race] += 1
-        mycount = count[self.race]
-        for race in Races:
-            if count[race]<=mycount and race!=self.race and count[race]!=0:
-                return False  #happy if it's not in the smallest minority
-        return True
+        local_distribution = sorted(Races, key = lambda race: count[race]) # sort ascending by race count
+        local_distribution = [race for race in local_distribution if count[race]>0]  # strip out non-present races
+        if local_distribution[0]==self.race and len(local_distribution)>1:  # self in smallest minority
+            return True
+        else:
+            return False
+#         mycount = count[self.race]
+#         for race in Races:
+#             if count[race]<=mycount and race!=self.race and count[race]!=0:
+#                 return False  #happy if it's not in the smallest minority
+#         return True
 
 class SSM_Variant_Agent(SSM_Original_Agent):
 
@@ -176,7 +182,7 @@ class SSMExperiment(Experiment):
 
     def setupParameters(self):
         self.addParameter(setAgentClass, ["ORIGINAL", "VARIANT"])
-        self.addParameter(setNumOfRaces, [2, 3, 4, 5, 6, 7, 8])
+        self.addParameter(setNumOfRaces, [2])#, 3, 4, 5, 6, 7, 8])
 
     def setupExperiment(self):
         self.Name = "Schelling Experiment"
