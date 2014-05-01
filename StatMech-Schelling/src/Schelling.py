@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from random import shuffle
+from random import random
 from experiment import Experiment
 
 Grid_Size = 100
@@ -22,56 +23,76 @@ def setEmptySpace(value = Empty_Space):
     Empty_Space = value
     return value
 
-Agent_Class = "ORIGINAL"
-def setAgentClass(value = "ORIGINAL"):
-    global Agent_Class
-    Agent_Class = value
-    return value
+# initial fraction of population with a "Schelling" attitude
+# the remainder are indifferent to neighborhood racial make-up 
+Schelling = 1
+No_Preference = 0
+Initial_Opinion_Split = 0.5
+def setInitialOpinionSplit(f=Initial_Opinion_Split):
+    global Initial_Opinion_Split
+    Initial_Opinion_Split = f
+    return f
 
-def getAgentClass():
-    if Agent_Class == "ORIGINAL":
-        return SSM_Original_Agent
-    else:
-        return SSM_Variant_Agent
+Social_Force = 0.0
+def setSocialForce(val=Social_Force):
+    global Social_Force
+    Social_Force = val
+    return val
+
+Social_Temperature = 1.0
+def setSocialTemperature(val=Social_Temperature):
+    global Social_Temperature
+    Social_Temperature = val
+    return val
+
+# how often do agents decide to move on average, irrespective of neighbors
+Move_Frequency = 0.1
+def setMoveFrequency(val):
+    global Move_Frequency
+    Move_Frequency = val
+    return val
+
+Minimum_Residency = 3
 
 def location(x,y):
     return (x%Grid_Size, y%Grid_Size)
 
-class SSM_Original_Agent(object):
-
+class Agent(object):
+    
     def __init__(self, race):
         '''
         race is a number and represents the "race" of the agent
         '''
         self.race = race
+        self.opinion = No_Preference if random()>Initial_Opinion_Split else Schelling
+        self.friends = []
+        self.residency = random()/Move_Frequency
+        
+    def connectTo(self, other):
+        self.friends.append(other)
+    
+    def evaluateOpinionState(self):
+        no_pref_friends = [friend for friend in self.friends if friend.opinion==No_Preference]
+        n0 = len(no_pref_friends)
+        N = len(self.friends)
+        n1 = N - n0
+        z = 
+        
 
     def isUnhappy(self, neighbors):
-        count = [0 for i in Races] #counts of neighbors of each race in this agent's neighborhood
-        for neighbor in neighbors:
-            count[neighbor.race] += 1
-        local_distribution = sorted(Races, key = lambda race: count[race]) # sort ascending by race count
-        local_distribution = [race for race in local_distribution if count[race]>0]  # strip out non-present races
-        if local_distribution[0]==self.race and len(local_distribution)>1:  # self in smallest minority
-            if count[local_distribution[1]] > count[self.race]:  # not a tie
-                return True
+        if self.opinion == Schelling:
+            count = [0 for i in Races] #counts of neighbors of each race in this agent's neighborhood
+            for neighbor in neighbors:
+                count[neighbor.race] += 1
+            local_distribution = sorted(Races, key = lambda race: count[race]) # sort ascending by race count
+            local_distribution = [race for race in local_distribution if count[race]>0]  # strip out non-present races
+            if local_distribution[0]==self.race and len(local_distribution)>1:  # self in smallest minority
+                if count[local_distribution[1]] > count[self.race]:  # not a tie
+                    return True
+                else:
+                    return False
             else:
                 return False
-        else:
-            return False
-
-class SSM_Variant_Agent(SSM_Original_Agent):
-
-    def __init__(self, race):
-        super().__init__(race)
-
-    def isUnhappy(self, neighbors):
-        count = [0 for i in Races]
-        for neighbor in neighbors:
-            count[neighbor.race] += 1
-        maxcount = max(count)
-        maxrace = count.index(maxcount)
-        if maxcount > len(neighbors)/2 and maxrace!=self.race:
-            return True # unhappy if neighborhood dominated by another race
         else:
             return False
 
@@ -80,7 +101,6 @@ class SchellingSim(object):
     def __init__(self):
         self.agents = {}
         self.locations = [(x,y) for x in range(Grid_Size) for y in range(Grid_Size)]
-        agent_class = getAgentClass()
         agents_per_race = int((Grid_Size**2)*(1-Empty_Space)/Num_of_Races)
         shuffle(self.locations)
         loc_idx = 0
@@ -88,7 +108,7 @@ class SchellingSim(object):
             for i in range(agents_per_race):
                 loc = self.locations[loc_idx]
                 loc_idx += 1
-                self.agents[loc] = agent_class(race)
+                self.agents[loc] = Agent(race)
         # start keeping track of empty locations for unhappy agents to move to
         self.empty_locations = []
         for i in range(loc_idx, len(self.locations)):
@@ -180,7 +200,7 @@ class SSMExperiment(Experiment):
 
     def setupParameters(self):
         self.addParameter(setAgentClass, ["ORIGINAL", "VARIANT"])
-        self.addParameter(setNumOfRaces, [2])#, 3, 4, 5, 6, 7, 8])
+        self.addParameter(setNumOfRaces, [2, 3])#, 3, 4, 5, 6, 7, 8])
 
     def setupExperiment(self):
         self.Name = "Schelling Experiment"
