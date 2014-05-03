@@ -137,21 +137,18 @@ class Schelling_Sim(object):
         agents_per_race = int((Grid_Size**2)*(1-Empty_Space)/Num_of_Races)
         shuffle(self.locations)
         loc_idx = 0
+        minimum_friends = 3
         agents = []
         for race in range(Num_of_Races):
             for i in range(agents_per_race):
                 new_agent = Agent(race)
-                if agents:
-                    #preferentially attachment of new agent
-                    #method 1
-                    degrees = [degree(agent) for agent in agents]
-                    #friend = agents[randomFromCDF(cdf(degrees))]
-                    #new_agent.connectTo(friend)
-                    # method 2
-                    sum_degrees = sum(degrees)
-                    for agent in agents:
-                        if random()<degree(agent)/sum_degrees:
-                            new_agent.connectTo(agent)
+                potential_friends = agents.copy()
+                for j in range(minimum_friends):
+                    if potential_friends:
+                        degrees = [degree(agent) for agent in potential_friends]
+                        friend = potential_friends[randomFromCDF(cdf(degrees))]
+                        new_agent.connectTo(friend)
+                        potential_friends.remove(friend)
                 loc = self.locations[loc_idx]
                 loc_idx += 1
                 self.agents[loc] = new_agent
@@ -261,7 +258,7 @@ class SSMExperiment(Experiment):
         self.addOutput(self.getTolerance, "tolerance", "%1.2f")
 
     def setupParameters(self):
-        self.addParameter(setNumOfRaces, [2])#, 3, 4, 5, 6, 7, 8])
+        self.addParameter(setNumOfRaces, [2])
         self.addParameter(setInitialOpinionSplit, [0, 0.25, 0.5, 0.75, 1.0])
         self.addParameter(setSocialForce, [-0.5, 0, 0.5])
         self.addParameter(setSocialTemperature, [1.0])
@@ -271,6 +268,23 @@ class SSMExperiment(Experiment):
         self.comments = "Schelling Segregation Model with Statistical Mechanics of Opinion Diffusion"
         self.setupParameters()
         self.job_repetitions = 20
+
+class SSMExperiment2(SSMExperiment):
+
+    def __init__(self):
+        super(SSMExperiment2, self).__init__()
+        
+    def setupExperiment(self):
+        self.Name = "Schelling Stat Mech Experiment"
+        self.comments = "Looking at preferential attachment"
+        self.setupParameters()
+        self.job_repetitions = 20
+    
+    def setupParameters(self):
+        self.addParameter(setNumOfRaces, [2])
+        self.addParameter(setInitialOpinionSplit, [0.5])
+        self.addParameter(setSocialForce, [0])
+        self.addParameter(setSocialTemperature, [1.0])
         
 def singleRun():
     setGridSize(50)
@@ -291,5 +305,6 @@ def singleRun():
         turns += 1
 
 if __name__ == "__main__" :
+    #SSMExperiment2().run()
     SSMExperiment().run()
     #singleRun()
