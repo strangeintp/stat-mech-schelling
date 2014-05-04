@@ -1,0 +1,19 @@
+Experiment Schelling Stat Mech Experiment
+Running at end and mid points for history files.
+Experiment started 2014-05-03 183634
+
+######################################################
+Experiment Defaults:
+                           setNumOfRaces :,  	2
+Experiment Parameter Variations:
+                  setInitialOpinionSplit :,  	[0, 0.5, 1.0]
+                          setSocialForce :,  	[-0.5, 0.5]
+                    setSocialTemperature :,  	[0.01, 0.1, 1.0]
+######################################################
+*********************Job Settings*********************
+                  setInitialOpinionSplit :	,0
+                          setSocialForce :	,-0.5
+                    setSocialTemperature :	,0.01
+ timestamp, job ID, setInitialOpinionSplit, setSocialForce, setSocialTemperature, runtime, pct happy, pct same, tolerance
+ 2014-05-03 183634, 1,                    0,                 -0.5,                 0.01,72,90.66,79.50,0.00
+ 2014-05-03 183648, 1,                    0,                 -0.5,                 0.01

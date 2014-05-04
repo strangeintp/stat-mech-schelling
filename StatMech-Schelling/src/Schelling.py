@@ -6,6 +6,7 @@ from math import exp
 from utility import pdf
 from utility import cdf
 from utility import randomFromCDF
+from utility import getTimeStampString
 
 VERBOSE = False
 def setVerbose(val = VERBOSE):
@@ -16,6 +17,21 @@ def setVerbose(val = VERBOSE):
 def verbose(stuff):
     if VERBOSE:
         print(stuff)
+
+save_history = False
+history_file = None
+timestamp = ""
+def writeHistory(folder):
+    global save_history, history_file
+    save_history = True
+    filename = folder + "history " + timestamp + ".csv"
+    history_file = open(filename, 'w')
+    history_file.write("Unhappy, Sameness, Tolerance\n")
+
+def archive(stuff):
+    if history_file:
+        history_file.write(stuff)
+    
 
 Grid_Size = 100
 def setGridSize(value = Grid_Size):
@@ -184,7 +200,10 @@ class Schelling_Sim(object):
                 self.moveAgentAt(loc)
             elif agent.wantsToMove():
                 self.moveAgentAt(loc)
-        verbose("Unhappy: %2.2f \t Sameness: %2.2f \t Tolerance: %0.2f"%(self.getUnhappyPercentage(), self.getPercentSameness(), self.getNoPreferenceFraction()))
+        values = (self.getUnhappyPercentage(), self.getPercentSameness(), self.getNoPreferenceFraction())
+        verbose("Unhappy: %2.2f \t Sameness: %2.2f \t Tolerance: %0.2f"%values)
+        archive("%2.2f, %2.2f, %0.2f\n"%values)
+
 
     def moveAgentAt(self, loc):
         # move agent to first empty location in list
@@ -222,6 +241,10 @@ class SSMExperiment(Experiment):
         self.sim = None
 
     def initiateSim(self):
+        global timestamp
+        self.datetime = getTimeStampString()
+        timestamp = self.datetime
+        writeHistory("../output/histories/")
         self.sim = Schelling_Sim()
         self.delta_unhappy = 100
         self.last_unhappy = 100
@@ -259,15 +282,15 @@ class SSMExperiment(Experiment):
 
     def setupParameters(self):
         self.addParameter(setNumOfRaces, [2])
-        self.addParameter(setInitialOpinionSplit, [0, 0.25, 0.5, 0.75, 1.0])
-        self.addParameter(setSocialForce, [-0.5, 0, 0.5])
-        self.addParameter(setSocialTemperature, [1.0])
+        self.addParameter(setInitialOpinionSplit, [0, 0.5, 1.0])
+        self.addParameter(setSocialForce, [-0.5, 0.5])
+        self.addParameter(setSocialTemperature, [0.01, 0.1, 1.0])
 
     def setupExperiment(self):
         self.Name = "Schelling Stat Mech Experiment"
-        self.comments = "Schelling Segregation Model with Statistical Mechanics of Opinion Diffusion"
+        self.comments = "Running at end and mid points for history files"
         self.setupParameters()
-        self.job_repetitions = 20
+        self.job_repetitions = 10
 
 class SSMExperiment2(SSMExperiment):
 
