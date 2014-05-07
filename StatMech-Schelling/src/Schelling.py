@@ -282,15 +282,15 @@ class SSMExperiment(Experiment):
 
     def setupParameters(self):
         self.addParameter(setNumOfRaces, [2])
-        self.addParameter(setInitialOpinionSplit, [0, 0.5, 1.0])
-        self.addParameter(setSocialForce, [-0.5, 0.5])
+        self.addParameter(setInitialOpinionSplit, [0.25, 0.5, 0.75])
+        self.addParameter(setSocialForce, [-0.25, 0, 0.25])
         self.addParameter(setSocialTemperature, [0.01, 0.1, 1.0])
 
     def setupExperiment(self):
         self.Name = "Schelling Stat Mech Experiment"
         self.comments = "Running at end and mid points for history files"
         self.setupParameters()
-        self.job_repetitions = 10
+        self.job_repetitions = 20
 
 class SSMExperiment2(SSMExperiment):
 
